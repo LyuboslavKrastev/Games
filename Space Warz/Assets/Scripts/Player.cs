@@ -10,10 +10,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
 
+    [SerializeField]
+    private GameObject _laserPrefab;
+
+    [SerializeField]
+    private float _fireRate = 0.15f;
+    [SerializeField]
+    private float _canFire = -1f;
+
     private const float LOWER_BOUND = -3.8f;
-    private const float UPPER_BOUND = 0;
+    private const float UPPER_BOUND = 0.0f;
     private const float LEFT_BOUND = 11.3f;
     private const float RIGHT_BOUND = -11.3f;
+
 
     void Start()
     {
@@ -26,6 +35,22 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculatePlayerMovement();
+
+        // Spawn a gameObject on space press
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        {
+            FireLaser();
+        }
+    }
+
+    private void FireLaser()
+    {
+        // Time.time is the time the game has been running
+        _canFire = Time.time + _fireRate;
+
+        Vector3 offset = new Vector3(0, 0.8f, 0);
+        // Quaternion.Identity means default rotation
+        Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
     }
 
     private void CalculatePlayerMovement()
@@ -38,10 +63,8 @@ public class Player : MonoBehaviour
         (can be thought of as one second - in this case the object will be moving at _speed meters per second in the direction, determined by the player input) */
         transform.Translate(direction * _speed * Time.deltaTime);
 
-       
         float playerXPosition = transform.position.x;
         float playerYPosition = transform.position.y;
-
         ValidatePlayerPosition(playerXPosition, playerYPosition);
     }
 
