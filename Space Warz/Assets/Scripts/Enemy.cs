@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private float _speed = 4.0f;
+    [SerializeField]
+    private float _speed = 0.5f;
 
     private float offScreenYPosition = -5.0f;
     private float topScreenYPosition = 7.0f;
@@ -15,7 +16,6 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y <= offScreenYPosition )
@@ -28,19 +28,19 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other) // we can find out who collided with us
     {
         Debug.Log("Hit: " + other.transform.name);
-        // if other is player => destroy this object and damage the player
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("I hit a player!");
-            Destroy(gameObject);
+            Destroy(this.gameObject);
 
-
+            Player player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.TakeDamage();
+            }
         }
-        // if other is laser => destroy this object and the laser
         else
-        {
-            Debug.Log("I was hit by a laser!");
-            Destroy(gameObject);
+        { 
+            Destroy(this.gameObject);
             Destroy(other.gameObject);
         }
     }

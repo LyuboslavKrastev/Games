@@ -23,12 +23,22 @@ public class Player : MonoBehaviour
     private const float LEFT_BOUND = 11.3f;
     private const float RIGHT_BOUND = -11.3f;
 
+    [SerializeField]
+    private int _lives = 3;
+    private SpawnManager _spawnManager;
 
     void Start()
     {
         /* Take the current position and assign it a starting position
            When the game is started, set it to zero (0, 0, 0) */
         transform.position = new Vector3(0, 0, 0);
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn manager not found!");
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +99,20 @@ public class Player : MonoBehaviour
         else if (xPosition < RIGHT_BOUND)
         {
             transform.position = new Vector3(LEFT_BOUND, yPosition, 0);
+        }
+    }
+
+    public void TakeDamage()
+    {
+        this._lives -= 1;
+
+        if (this._lives < 1)
+        {
+            Destroy(this.gameObject);
+
+            // inform spawn manager
+
+            this._spawnManager.OnPlayerDeath();
         }
     }
 }
