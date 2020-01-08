@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other) // we can find out who collided with us
+    private void OnTriggerEnter2D(Collider2D other) // we can find out who collided with us
     {
         Debug.Log("Hit: " + other.transform.name);
         if (other.gameObject.tag == "Player")

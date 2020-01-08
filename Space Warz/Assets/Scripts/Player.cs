@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         // Time.time is the time the game has been running
         _canFire = Time.time + _fireRate;
 
-        Vector3 offset = new Vector3(0, 0.8f, 0);
+        Vector3 offset = new Vector3(0, 1.0f, 0);
         // Quaternion.Identity means default rotation
         Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
     }
