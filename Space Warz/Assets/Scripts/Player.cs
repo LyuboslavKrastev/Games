@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
     // it is made accessible through the unity inspector, using this attribute
     [SerializeField]
     private float _speed = 3.5f;
+    private float _bonusSpeed = 5f;
 
     [SerializeField]
     private GameObject _laserPrefab;
@@ -46,6 +48,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void EnableShield()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -65,7 +72,7 @@ public class Player : MonoBehaviour
         Vector3 offset = new Vector3(0, 1.0f, 0);
 
         if (_isTrippleShotEnabled == false)
-        {        
+        {
             // Quaternion.Identity means default rotation
             Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
         }
@@ -83,6 +90,7 @@ public class Player : MonoBehaviour
 
         /* Time.deltaTime does the conversion from framerate dependent to real time (second, minutes, hours)
         (can be thought of as one second - in this case the object will be moving at _speed meters per second in the direction, determined by the player input) */
+
         transform.Translate(direction * _speed * Time.deltaTime);
 
         float playerXPosition = transform.position.x;
@@ -123,11 +131,20 @@ public class Player : MonoBehaviour
 
     private IEnumerator TrippleShotPowerDownRoutine()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(5.0f);
-            this._isTrippleShotEnabled = false;
-        }
+        yield return new WaitForSeconds(5.0f);
+        this._isTrippleShotEnabled = false;
+    }
+
+    public void EnableSpeedBoost()
+    {
+        this._speed += this._bonusSpeed;
+        StartCoroutine(SpeedBoostDownRoutine());
+    }
+
+    private IEnumerator SpeedBoostDownRoutine()
+    {
+        yield return new WaitForSeconds(7.0f);
+        this._speed -= this._bonusSpeed;
     }
 
     public void TakeDamage()

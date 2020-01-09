@@ -10,6 +10,14 @@ public class PowerUp : MonoBehaviour
     private float _speed = 3.0f;
     private float offScreenYPosition = -5.0f;
 
+    // PowerUp IDs
+    // 0 - tripple
+    // 1 - speed
+    // 2 - shield
+
+    [SerializeField]
+    private int powerUpId;
+
     // Update is called once per frame
     void Update()
     {
@@ -29,7 +37,20 @@ public class PowerUp : MonoBehaviour
 
             if (player != null)
             {
-                player.EnableTrippleShot();
+                switch (this.powerUpId)
+                {
+                    case 0:
+                        player.EnableTrippleShot();
+                        break;
+                    case 1:
+                        player.EnableSpeedBoost();
+                        break;
+                    case 2:
+                        player.EnableShield();
+                        break;
+                    default:
+                        break;
+                }
             }
 
             Destroy(this.gameObject);         

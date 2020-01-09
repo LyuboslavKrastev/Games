@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
 
     [SerializeField]
-    private GameObject _powerUpPrefab;
+    private GameObject[] _powerUpPrefabs;
 
     private bool _continueSpawning = true;
 
@@ -42,9 +42,11 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
-            GameObject newPowerup = Instantiate(_powerUpPrefab, spawnPosition, Quaternion.identity);
+            int powerUpindex = Random.Range(0, 2);
 
-            yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
+            GameObject newPowerup = Instantiate(_powerUpPrefabs[powerUpindex], spawnPosition, Quaternion.identity);
+
+            yield return new WaitForSeconds(Random.Range(7.0f, 12.0f));
         }
     }
 
