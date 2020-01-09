@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
 
     [SerializeField]
+    private GameObject _trippleShotPrefab;
+
+    [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _canFire = -1f;
@@ -26,6 +29,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
+
+    private bool _isTrippleShotEnabled = false;
 
     void Start()
     {
@@ -57,10 +62,17 @@ public class Player : MonoBehaviour
     {
         // Time.time is the time the game has been running
         _canFire = Time.time + _fireRate;
-
         Vector3 offset = new Vector3(0, 1.0f, 0);
-        // Quaternion.Identity means default rotation
-        Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+
+        if (_isTrippleShotEnabled == false)
+        {        
+            // Quaternion.Identity means default rotation
+            Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     private void CalculatePlayerMovement()
@@ -99,6 +111,22 @@ public class Player : MonoBehaviour
         else if (xPosition < RIGHT_BOUND)
         {
             transform.position = new Vector3(LEFT_BOUND, yPosition, 0);
+        }
+    }
+
+    public void EnableTrippleShot()
+    {
+        this._isTrippleShotEnabled = true;
+
+        StartCoroutine(TrippleShotPowerDownRoutine());
+    }
+
+    private IEnumerator TrippleShotPowerDownRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5.0f);
+            this._isTrippleShotEnabled = false;
         }
     }
 

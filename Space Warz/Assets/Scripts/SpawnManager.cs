@@ -10,25 +10,19 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyContainer;
 
+    [SerializeField]
+    private GameObject _powerUpPrefab;
+
     private bool _continueSpawning = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(this.SpawnRoutine());
+        StartCoroutine(this.SpawnEnemyRoutine());
+        StartCoroutine(this.SpawnPowerUpRoutine());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // spawn game objects every 5 seconds 
-    // Create a coroutine of time IEnumerator -- Yield events 
-    // while loop
-
-    IEnumerator SpawnRoutine()
+    IEnumerator SpawnEnemyRoutine()
     {
         while (_continueSpawning)
         {
@@ -39,6 +33,18 @@ public class SpawnManager : MonoBehaviour
             newEnemy.transform.parent = _enemyContainer.transform; // parent is a transform type
 
             yield return new WaitForSeconds(5.0f); // wait for 5 seconds so we dont get a stack overflow
+        }
+    }
+
+    IEnumerator SpawnPowerUpRoutine()
+    {
+        while (_continueSpawning)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7, 0);
+
+            GameObject newPowerup = Instantiate(_powerUpPrefab, spawnPosition, Quaternion.identity);
+
+            yield return new WaitForSeconds(Random.Range(3.0f, 7.0f));
         }
     }
 
