@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -11,6 +12,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Text _gameOver;
+
+    [SerializeField]
+    private Text _restart;
 
     [SerializeField]
     private Image _livesImage;
@@ -33,10 +37,25 @@ public class UIManager : MonoBehaviour
         _livesImage.sprite = _livesSprites[currentLives];
     }
 
-    public void DisplayGameOver()
+    public void GameOver()
     {
         _gameOver.gameObject.SetActive(true);
+
+        _restart.gameObject.SetActive(true);
+
+        StartCoroutine(GameOverFlickerRoutine());
     }
 
-
+    private IEnumerator GameOverFlickerRoutine()
+    {
+        while (true)
+        {
+            _gameOver.text = "GAME OVER";
+            yield return new WaitForSeconds(0.5f);
+            _gameOver.text = "";
+            yield return new WaitForSeconds(0.5f);
+           
+        }
+        
+    }
 }

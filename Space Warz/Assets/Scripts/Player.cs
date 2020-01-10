@@ -183,7 +183,7 @@ public class Player : MonoBehaviour
         {
             Destroy(this.gameObject);
 
-            _uIManager.DisplayGameOver();
+            _uIManager.GameOver();
 
             // inform spawn manager
 
