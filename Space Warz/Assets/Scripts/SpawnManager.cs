@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
-            int powerUpindex = Random.Range(0, 2);
+            int powerUpindex = Random.Range(0, 3);
 
             GameObject newPowerup = Instantiate(_powerUpPrefabs[powerUpindex], spawnPosition, Quaternion.identity);
 

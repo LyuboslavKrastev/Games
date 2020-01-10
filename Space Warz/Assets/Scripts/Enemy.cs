@@ -13,6 +13,18 @@ public class Enemy : MonoBehaviour
     private const float LEFT_BOUND = 11.3f;
     private const float RIGHT_BOUND = -11.3f;
 
+    private Player _player;
+
+    void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
+        if (_player == null)
+        {
+            Debug.LogError("Player not found!");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -32,14 +44,17 @@ public class Enemy : MonoBehaviour
         {
             Destroy(this.gameObject);
 
-            Player player = other.GetComponent<Player>();
-            if (player != null)
+            if (_player != null)
             {
-                player.TakeDamage();
+                _player.TakeDamage();
             }
         }
-        else
-        { 
+        else if(other.gameObject.tag == "Laser")
+        {
+            if (_player != null)
+            {
+                _player.IncreaseScore(Random.Range(5, 15));
+            }
             Destroy(this.gameObject);
             Destroy(other.gameObject);
         }

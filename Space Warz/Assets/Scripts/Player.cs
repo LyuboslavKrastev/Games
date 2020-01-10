@@ -16,12 +16,17 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
 
     [SerializeField]
+    private GameObject _shieldVisual;
+
+    [SerializeField]
     private GameObject _trippleShotPrefab;
 
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _canFire = -1f;
+
+    private UIManager _uIManager;
 
     private const float LOWER_BOUND = -3.8f;
     private const float UPPER_BOUND = 0.0f;
@@ -30,9 +35,14 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _lives = 3;
+
+    [SerializeField]
+    private int _score;
+
     private SpawnManager _spawnManager;
 
     private bool _isTrippleShotEnabled = false;
+    private bool _isShieldEnabled = false;
 
     void Start()
     {
@@ -46,11 +56,21 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Spawn manager not found!");
         }
+
+        _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+        if (_uIManager == null)
+        {
+            Debug.LogError("UI manager not found!");
+        }
     }
 
     public void EnableShield()
     {
+        _isShieldEnabled = true;
 
+        // vizualise shield
+        _shieldVisual.SetActive(true);
     }
 
     // Update is called once per frame
@@ -149,15 +169,31 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (this._isShieldEnabled == true)
+        {
+            _isShieldEnabled = false;
+            _shieldVisual.SetActive(false);
+            return;
+        }
         this._lives -= 1;
+
+        _uIManager.UpdateLives(_lives);
 
         if (this._lives < 1)
         {
             Destroy(this.gameObject);
 
+            _uIManager.DisplayGameOver();
+
             // inform spawn manager
 
             this._spawnManager.OnPlayerDeath();
         }
+    }
+
+    public void IncreaseScore(int points)
+    {
+        this._score += points;
+        this._uIManager.UpdateScore(this._score);
     }
 }
