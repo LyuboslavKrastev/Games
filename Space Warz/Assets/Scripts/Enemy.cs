@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private const float RIGHT_BOUND = -11.3f;
 
     private Player _player;
+    private Animator _animator;
 
     void Start()
     {
@@ -22,6 +23,13 @@ public class Enemy : MonoBehaviour
         if (_player == null)
         {
             Debug.LogError("Player not found!");
+        }
+
+        _animator = GetComponent<Animator>();
+
+        if (_animator == null)
+        {
+            Debug.Log("Animator not found!");
         }
     }
 
@@ -42,7 +50,9 @@ public class Enemy : MonoBehaviour
         Debug.Log("Hit: " + other.transform.name);
         if (other.gameObject.tag == "Player")
         {
-            Destroy(this.gameObject);
+            _speed = 0;
+            _animator.SetTrigger("OnEnemyDeath");
+            Destroy(this.gameObject, 2.7f); // the animation is 2.5 seconds long so we destroy it after it has finished
 
             if (_player != null)
             {
@@ -55,8 +65,11 @@ public class Enemy : MonoBehaviour
             {
                 _player.IncreaseScore(Random.Range(5, 15));
             }
-            Destroy(this.gameObject);
-            Destroy(other.gameObject);
+            _speed = 0;
+            _animator.SetTrigger("OnEnemyDeath");
+           
+            Destroy(this.gameObject, 2.7f);
+            Destroy(other.gameObject, 2.7f);
         }
     }
 }

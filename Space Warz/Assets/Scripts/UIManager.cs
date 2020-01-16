@@ -22,9 +22,18 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _livesSprites;
 
+    private GameManager _gameManager;
+
     void Start()
     {
         this._score.text = "Score: 0";
+        _gameOver.gameObject.SetActive(false);
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+
+        if (_gameManager == null)
+        {
+            Debug.LogError("Game Manager not found!");
+        }
     }
 
     public void UpdateScore(int score)
@@ -42,6 +51,8 @@ public class UIManager : MonoBehaviour
         _gameOver.gameObject.SetActive(true);
 
         _restart.gameObject.SetActive(true);
+
+        _gameManager.GameOver();
 
         StartCoroutine(GameOverFlickerRoutine());
     }
