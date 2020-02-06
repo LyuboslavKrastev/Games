@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -17,6 +18,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shieldVisual;
+
+    [SerializeField]
+    private GameObject[] engineFires;
 
     [SerializeField]
     private GameObject _trippleShotPrefab;
@@ -175,6 +179,9 @@ public class Player : MonoBehaviour
             _shieldVisual.SetActive(false);
             return;
         }
+
+        EnableEngineFire();
+
         this._lives -= 1;
 
         _uIManager.UpdateLives(_lives);
@@ -188,6 +195,20 @@ public class Player : MonoBehaviour
             // inform spawn manager
 
             this._spawnManager.OnPlayerDeath();
+        }
+    }
+
+    private void EnableEngineFire()
+    {
+        GameObject selection = engineFires
+        .Where(i => !i.activeSelf)
+        .OrderBy(n => UnityEngine.Random.value)
+        .FirstOrDefault();
+
+        // selection will be null if all game objects are already active
+        if (selection != null)
+        {
+            selection.SetActive(true);
         }
     }
 

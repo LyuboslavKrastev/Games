@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("OnEnemyDeath");
            
             Destroy(this.gameObject, 2.7f);
-            Destroy(other.gameObject, 2.7f);
+            Destroy(other.gameObject);
         }
     }
 }
