@@ -18,6 +18,9 @@ public class PowerUp : MonoBehaviour
     [SerializeField]
     private int powerUpId;
 
+    [SerializeField]
+    private AudioClip _soundEffectClip;
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +34,8 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) // we can find out who collided with us
     {
+        AudioSource.PlayClipAtPoint(_soundEffectClip, transform.position);
+
         if (other.gameObject.tag == "Player")
         {
             Player player = other.GetComponent<Player>();

@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private Animator _animator;
 
+    private AudioSource _explosionSound;
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -30,6 +32,13 @@ public class Enemy : MonoBehaviour
         if (_animator == null)
         {
             Debug.Log("Animator not found!");
+        }
+
+        _explosionSound = GetComponent<AudioSource>();
+
+        if (_explosionSound == null)
+        {
+            Debug.LogError("AudioSource not found!");
         }
     }
 
@@ -71,5 +80,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2.7f);
             Destroy(other.gameObject);
         }
+
+        _explosionSound.Play();
     }
 }

@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
     private bool _isTrippleShotEnabled = false;
     private bool _isShieldEnabled = false;
 
+    private AudioSource _laserSound;
+
     void Start()
     {
         /* Take the current position and assign it a starting position
@@ -66,6 +68,13 @@ public class Player : MonoBehaviour
         if (_uIManager == null)
         {
             Debug.LogError("UI manager not found!");
+        }
+
+        _laserSound = GetComponent<AudioSource>();
+
+        if (_laserSound == null)
+        {
+            Debug.LogError("AudioSource not found!");
         }
     }
 
@@ -104,6 +113,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_trippleShotPrefab, transform.position, Quaternion.identity);
         }
+
+        _laserSound.Play();
     }
 
     private void CalculatePlayerMovement()
