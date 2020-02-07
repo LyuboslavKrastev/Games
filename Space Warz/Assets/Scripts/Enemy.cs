@@ -7,6 +7,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _speed = 0.5f;
 
+    [SerializeField]
+    private GameObject _laserPrefab;
+    private float _fireRate = 3.0f;
+    private float _canFire = -1;
+
     private float offScreenYPosition = -5.0f;
     private float topScreenYPosition = 7.0f;
 
@@ -15,6 +20,8 @@ public class Enemy : MonoBehaviour
 
     private Player _player;
     private Animator _animator;
+
+    bool _isAlive = true;
 
     private AudioSource _explosionSound;
 
@@ -45,9 +52,26 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalculateMovement();
+
+        if (Time.time > _canFire && _isAlive)
+        {
+            _fireRate = Random.Range(3.0f, 7.0f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            foreach (var laser in lasers)
+            {
+                laser.SetEnemyLaser();
+            }
+        }
+    }
+
+    private void CalculateMovement()
+    {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if (transform.position.y <= offScreenYPosition )
+        if (transform.position.y <= offScreenYPosition)
         {
             float randomXPosition = Random.Range(RIGHT_BOUND, LEFT_BOUND);
             transform.position = new Vector3(randomXPosition, topScreenYPosition, 0);
@@ -70,17 +94,20 @@ public class Enemy : MonoBehaviour
         }
         else if(other.gameObject.tag == "Laser")
         {
-            if (_player != null)
-            {
-                _player.IncreaseScore(Random.Range(5, 15));
-            }
-            _speed = 0;
-            _animator.SetTrigger("OnEnemyDeath");
-           
-            Destroy(this.gameObject, 2.7f);
-            Destroy(other.gameObject);
+                if (_player != null)
+                {
+                    _player.IncreaseScore(Random.Range(5, 15));
+                    _isAlive = false;
+                }
+                _speed = 0;
+                _animator.SetTrigger("OnEnemyDeath");
+
+                Destroy(this.gameObject, 2.7f);
+                Destroy(other.gameObject); 
         }
 
+
+        Destroy(GetComponent<Collider2D>()); // destroy the colider so that we dont get multipole sounds to play if the player keeps firing at the enemy
         _explosionSound.Play();
     }
 }

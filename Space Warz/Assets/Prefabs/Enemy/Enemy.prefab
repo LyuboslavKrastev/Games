@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _laserPrefab: {fileID: 3793681689686073300, guid: 8208f7dea33f3884cbb0341043938a69,
+    type: 3}
 --- !u!95 &332671504956410939
 Animator:
   serializedVersion: 3

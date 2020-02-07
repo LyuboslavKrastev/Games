@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(0); // current game scene, added through the Unity build settings UI
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public void GameOver()

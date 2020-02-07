@@ -34,10 +34,9 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) // we can find out who collided with us
     {
-        AudioSource.PlayClipAtPoint(_soundEffectClip, transform.position);
-
         if (other.gameObject.tag == "Player")
         {
+            AudioSource.PlayClipAtPoint(_soundEffectClip, transform.position);
             Player player = other.GetComponent<Player>();
 
             if (player != null)
