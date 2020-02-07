@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(0); // current game scene, added through the Unity build settings UI
         }
 
+        // quit app on escape press
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
