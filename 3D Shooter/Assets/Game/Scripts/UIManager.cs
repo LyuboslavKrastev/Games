@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     private Text _ammoCount;
 
     [SerializeField]
-    private Text _pickUpCoin;
+    private Text _interactionNotification;
 
     [SerializeField]
     private Image _coinImg;
@@ -45,19 +45,25 @@ public class UIManager : MonoBehaviour
         _reloadText.gameObject.SetActive(false);
     }
 
-    public void UpdateCoins(int coins)
+    public void ShowCoin()
     {
         _coinImg.gameObject.SetActive(true);
     }
-
-    public void ShowPickUpNotification()
+    public void HideCoin()
     {
-        _pickUpCoin.gameObject.SetActive(true);
+        _coinImg.gameObject.SetActive(false);
     }
 
-    public void HidePickUpNotification()
+
+    public void ShowInteractionNotification(string text)
     {
-        _pickUpCoin.gameObject.SetActive(false);
+        _interactionNotification.text = text;
+        _interactionNotification.gameObject.SetActive(true);
+    }
+
+    public void HideInteractionNotification()
+    {
+        _interactionNotification.gameObject.SetActive(false);
     }
 
 }

@@ -7,6 +7,11 @@ public class Player : MonoBehaviour
 
     private UIManager _UIManager;
 
+    [SerializeField]
+    private Transform _reloadTransform;
+    Vector3 _weaponStartPosition;
+    Quaternion _weaponStartRotation;
+
     private float _speed = 3;
     private float _gravity = 1.2f;
     private float _jumpStrength = 16.0f;
@@ -15,7 +20,8 @@ public class Player : MonoBehaviour
     private int _currentAmmo;
     private int _maxAmmo = 150;
 
-    bool reloading = false;
+    private bool _isReloading = false;
+    private bool _hasWeapon = false;
 
     [SerializeField]
     private GameObject _muzzleFlash;
@@ -26,10 +32,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioSource _audioSource;
 
+    [SerializeField]
+    private GameObject _weapon;
+
     private int _coins = 0;
 
     void Start()
     {
+        _weapon.SetActive(false);
+        _weaponStartPosition = _weapon.transform.localPosition;
+        _weaponStartRotation = _weapon.transform.localRotation;
         _controller = GetComponent<CharacterController>();
 
         if (_controller == null)
@@ -53,42 +65,47 @@ public class Player : MonoBehaviour
         _UIManager.UpdateAmmo(_currentAmmo);
     }
 
+    public int GetCoins()
+    {
+        return _coins;
+    }
+    public void BuyWeapon()
+    {
+        _coins -= 1;
+        _weapon.SetActive(true);
+        _UIManager.HideCoin();
+        _hasWeapon = true;
+    }
+
     public void TakeCoin()
     {
         _coins += 1;
-        _UIManager.UpdateCoins(_coins);
+        _UIManager.ShowCoin();
     }
     IEnumerator ReloadRoutine()
     {
-        reloading = true;
+        _isReloading = true;
         _UIManager.HideReloadWarning();
         _UIManager.ShowReloading();
+
+        // Simulate reloading by moving and turn the weapon
+        _weapon.transform.position = _reloadTransform.position;
+        _weapon.transform.rotation = _reloadTransform.rotation;
+
         yield return new WaitForSeconds(1.0f);
+
+        _isReloading = false;
         _currentAmmo = _maxAmmo;
         _UIManager.HideReloading();
         _UIManager.UpdateAmmo(_currentAmmo);
-        reloading = false;
+        
+        // Get the weapon to the original position
+        _weapon.transform.localPosition = _weaponStartPosition;
+        _weapon.transform.localRotation = _weaponStartRotation;
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && reloading == false)
-        {
-            StartCoroutine(ReloadRoutine());
-        }
-        if (Input.GetMouseButton(0) && _currentAmmo > 0 && reloading == false)
-        {
-            Shoot();  
-        }
-        else
-        {
-            if (_currentAmmo <= 0 && !reloading)
-            {
-                _UIManager.ShowReloadWarning();
-            }
-            _muzzleFlash.SetActive(false);
-            _audioSource.Stop();
-        }
-
+        UseWeapon();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -96,6 +113,30 @@ public class Player : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
         CalculateMovment();
+    }
+
+    private void UseWeapon()
+    {
+        if (_hasWeapon)
+        {
+            if (Input.GetKeyDown(KeyCode.R) && _isReloading == false)
+            {
+                StartCoroutine(ReloadRoutine());
+            }
+            if (Input.GetMouseButton(0) && _currentAmmo > 0 && _isReloading == false)
+            {
+                Shoot();
+            }
+            else
+            {
+                if (_currentAmmo <= 0 && !_isReloading)
+                {
+                    _UIManager.ShowReloadWarning();
+                }
+                _muzzleFlash.SetActive(false);
+                _audioSource.Stop();
+            }
+        }
     }
 
     private void Shoot()

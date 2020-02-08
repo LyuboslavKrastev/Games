@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Sharkman : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-    [SerializeField]
-    private AudioSource _audioSource;
-
-    private bool _isInTrigger = false;
-
     private UIManager _UIManager;
 
     private Player player;
-    
+
+    private bool _isInTrigger;
+
+    AudioSource _audioSource;
+
     private void Start()
     {
         _UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -34,17 +31,24 @@ public class Coin : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-      
+
         if (other.tag == "Player")
         {
             player = other.GetComponent<Player>();
             _isInTrigger = true;
-            _UIManager.ShowInteractionNotification("Press E to take the coin");
+            if (player.GetCoins() > 0)
+            {
+                _UIManager.ShowInteractionNotification("Would you like to purchase some fish, buddy?");
+            }
+            else
+            {
+                _UIManager.ShowInteractionNotification("Come back when you can afford my fish!");
+            }
         }
     }
 
     void OnTriggerExit(Collider other)
-    {    
+    {
         if (other.tag == "Player")
         {
             _isInTrigger = false;
@@ -58,14 +62,11 @@ public class Coin : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (player != null)
+                if (player != null && player.GetCoins() > 0)
                 {
-                    _audioSource.Play();
                     _UIManager.HideInteractionNotification();
-                    player.TakeCoin();
-                    // remove the renderer, but do not destroy yet so the pickup audio is not stopped
-                    Destroy(GetComponent<MeshRenderer>()); 
-                    Destroy(this.gameObject, 1.0f);
+                    _audioSource.Play();
+                    player.BuyWeapon();
                 }
             }
         }
