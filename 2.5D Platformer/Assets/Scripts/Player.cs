@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     // this is a variable for caching our player's Y velocity, so it does not reset with each frame within the Update method and cause our jumps to not work as intended
     private float _yVelocity;
 
+    private int _lives = 3;
     void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -34,6 +35,19 @@ public class Player : MonoBehaviour
         if (_uIManager == null)
         {
             Debug.LogError("UI manager is NULL!");
+        }
+
+        _uIManager.UpdateLivesText(_lives);
+    }
+
+    public void ReduceLives()
+    {
+        _lives -= 1;
+        _uIManager.UpdateLivesText(_lives);
+
+        if (_lives < 1)
+        {
+            SceneManager.LoadScene(0); // reset the scene
         }
     }
 

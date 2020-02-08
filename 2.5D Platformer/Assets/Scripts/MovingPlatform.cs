@@ -15,7 +15,7 @@ public class MovingPlatform : MonoBehaviour
     private bool _switchDirection = false;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 currentPosition = transform.position;
         if (_switchDirection == false)
@@ -36,6 +36,23 @@ public class MovingPlatform : MonoBehaviour
         else if (transform.position == pointA.position)
         {
             _switchDirection = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("Detected player");
+            other.transform.parent = this.transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.transform.parent = null;
         }
     }
 }
