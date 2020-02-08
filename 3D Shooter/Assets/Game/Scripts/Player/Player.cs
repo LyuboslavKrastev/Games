@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
     {
         if (_hasWeapon)
         {
-            if (Input.GetKeyDown(KeyCode.R) && _isReloading == false)
+            if (Input.GetKeyDown(KeyCode.R) && _currentAmmo != _maxAmmo && _isReloading == false)
             {
                 StartCoroutine(ReloadRoutine());
             }
