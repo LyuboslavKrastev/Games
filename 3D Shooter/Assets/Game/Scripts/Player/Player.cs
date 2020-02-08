@@ -2,19 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 { 
-    CharacterController _controller;
+    private CharacterController _controller;
+
+    private UIManager _UIManager;
 
     private float _speed = 3;
     private float _gravity = 1.2f;
     private float _jumpStrength = 16.0f;
     private float yVelocity = 0;
 
+    private int _currentAmmo;
+    private int _maxAmmo = 150;
+
+    bool reloading = false;
+
     [SerializeField]
     private GameObject _muzzleFlash;
 
+    [SerializeField]
+    private GameObject _hitMarkerPrefab;
+
+    [SerializeField]
+    private AudioSource _audioSource;
 
     void Start()
     {
@@ -25,22 +38,52 @@ public class Player : MonoBehaviour
             Debug.LogError("CharacterController is NULL!");
         }
 
+        _UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+        if (_UIManager == null)
+        {
+            Debug.LogError("UIManager is NULL!");
+        }
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         _muzzleFlash.SetActive(false);
+
+        _currentAmmo = _maxAmmo;
+        _UIManager.UpdateAmmo(_currentAmmo);
+    }
+
+    IEnumerator ReloadRoutine()
+    {
+        reloading = true;
+        _UIManager.HideReloadWarning();
+        _UIManager.ShowReloading();
+        yield return new WaitForSeconds(1.0f);
+        _currentAmmo = _maxAmmo;
+        _UIManager.HideReloading();
+        _UIManager.UpdateAmmo(_currentAmmo);
+        reloading = false;
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.R) && reloading == false)
         {
-            _muzzleFlash.SetActive(true);
-            Shoot();
+            StartCoroutine(ReloadRoutine());
+        }
+        if (Input.GetMouseButton(0) && _currentAmmo > 0 && reloading == false)
+        {
+            Shoot();  
         }
         else
         {
+            if (_currentAmmo <= 0 && !reloading)
+            {
+                _UIManager.ShowReloadWarning();
+            }
             _muzzleFlash.SetActive(false);
+            _audioSource.Stop();
         }
 
 
@@ -52,8 +95,15 @@ public class Player : MonoBehaviour
         CalculateMovment();
     }
 
-    private static void Shoot()
-    {       
+    private void Shoot()
+    {
+        _muzzleFlash.SetActive(true);
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.Play();
+        }
+        _currentAmmo -= 1;
+        _UIManager.UpdateAmmo(_currentAmmo);
         Vector3 centerPosition = new Vector3(0.5f, 0.5f, 0);
 
         Ray rayOrigin = Camera.main.ViewportPointToRay(centerPosition);
@@ -62,6 +112,12 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(rayOrigin, out hitInfo))
         {
             Debug.Log($"You hit {hitInfo.transform.name}");
+
+            var lookRotation = Quaternion.LookRotation(hitInfo.normal);
+
+            GameObject hitMarker = Instantiate(_hitMarkerPrefab, hitInfo.point, lookRotation);
+
+            Destroy(hitMarker, 0.5f);
         }
     }
 
