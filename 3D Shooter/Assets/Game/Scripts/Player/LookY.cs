@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LookY : MonoBehaviour
 {
-    private float _sensitivity = 2.0f;
+    private float _sensitivity = 1.0f;
 
     void Update()
     {
