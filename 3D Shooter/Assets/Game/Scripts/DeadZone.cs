@@ -27,6 +27,10 @@ public class DeadZone : MonoBehaviour
                 player.transform.position = _startPoint.position;
             }
         }
+        else
+        {
+            Destroy(other.transform.parent.gameObject);
+        }
     }
     IEnumerator EnableRoutine(CharacterController controller, NavMeshAgent agent)
     {

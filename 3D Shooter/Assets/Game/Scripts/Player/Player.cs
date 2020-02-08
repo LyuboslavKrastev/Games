@@ -33,6 +33,9 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
 
     [SerializeField]
+    private AudioSource _reloadAudioSource;
+
+    [SerializeField]
     private GameObject _weapon;
 
     private int _coins = 0;
@@ -43,6 +46,13 @@ public class Player : MonoBehaviour
         _weaponStartPosition = _weapon.transform.localPosition;
         _weaponStartRotation = _weapon.transform.localRotation;
         _controller = GetComponent<CharacterController>();
+
+        _reloadAudioSource = GetComponent<AudioSource>();
+
+        if (_reloadAudioSource == null)
+        {
+            Debug.Log("AudioSource(Reload) is NULL!");
+        }
 
         if (_controller == null)
         {
@@ -87,13 +97,14 @@ public class Player : MonoBehaviour
         _isReloading = true;
         _UIManager.HideReloadWarning();
         _UIManager.ShowReloading();
+        _reloadAudioSource.Play();
 
         // Simulate reloading by moving and turn the weapon
         _weapon.transform.position = _reloadTransform.position;
         _weapon.transform.rotation = _reloadTransform.rotation;
 
         yield return new WaitForSeconds(1.0f);
-
+        _reloadAudioSource.Stop();
         _isReloading = false;
         _currentAmmo = _maxAmmo;
         _UIManager.HideReloading();
@@ -162,6 +173,16 @@ public class Player : MonoBehaviour
             GameObject hitMarker = Instantiate(_hitMarkerPrefab, hitInfo.point, lookRotation);
 
             Destroy(hitMarker, 0.5f);
+
+            // check if hit a crate
+            // destroy crate
+
+            Destructable crate = hitInfo.transform.GetComponent<Destructable>();
+
+            if (crate != null)
+            {
+                crate.DestroyCrate();
+            }
         }
     }
 
