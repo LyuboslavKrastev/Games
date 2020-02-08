@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
-
 public class Player : MonoBehaviour
 { 
     private CharacterController _controller;
@@ -28,6 +25,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioSource _audioSource;
+
+    private int _coins = 0;
 
     void Start()
     {
@@ -54,6 +53,11 @@ public class Player : MonoBehaviour
         _UIManager.UpdateAmmo(_currentAmmo);
     }
 
+    public void TakeCoin()
+    {
+        _coins += 1;
+        _UIManager.UpdateCoins(_coins);
+    }
     IEnumerator ReloadRoutine()
     {
         reloading = true;
@@ -65,7 +69,6 @@ public class Player : MonoBehaviour
         _UIManager.UpdateAmmo(_currentAmmo);
         reloading = false;
     }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) && reloading == false)

@@ -14,6 +14,12 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Text _ammoCount;
+
+    [SerializeField]
+    private Text _pickUpCoin;
+
+    [SerializeField]
+    private Image _coinImg;
     public void UpdateAmmo(int count)
     {
         _ammoCount.text = $"Ammo: {count}";
@@ -38,4 +44,20 @@ public class UIManager : MonoBehaviour
     {
         _reloadText.gameObject.SetActive(false);
     }
+
+    public void UpdateCoins(int coins)
+    {
+        _coinImg.gameObject.SetActive(true);
+    }
+
+    public void ShowPickUpNotification()
+    {
+        _pickUpCoin.gameObject.SetActive(true);
+    }
+
+    public void HidePickUpNotification()
+    {
+        _pickUpCoin.gameObject.SetActive(false);
+    }
+
 }
