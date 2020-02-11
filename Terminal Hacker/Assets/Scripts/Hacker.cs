@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class Hacker : MonoBehaviour
@@ -13,11 +14,16 @@ public class Hacker : MonoBehaviour
     private Screen currentScreen = Screen.MainMenu;
 
     private int level;
+    private string menuHint = "You can access the main menu by typing 'menu'";
+
+    [SerializeField]
+    private string password;
+
     private Dictionary<int, string[]> levelPasswords = new Dictionary<int, string[]>
     {
         { 1, new string[] {"books", "aisle", "self", "shelf", "font", "borrow", "librarian"} },
         { 2, new string[] {"prisoner", "officer", "handcuffs", "holster", "uniform", "arrest"} },
-        { 3, new string[] { "space", "astronaught", "station", "planetarySystem", "suit"} }
+        { 3, new string[] { "space", "astronaut", "station", "planetarySystem", "suit"} }
     };
     private Dictionary<string, string> levelOptions = new Dictionary<string, string>()
     {
@@ -58,15 +64,13 @@ public class Hacker : MonoBehaviour
         }
         else if (currentScreen == Screen.MainMenu)
         {
+            Terminal.WriteLine(menuHint);
             RunMainMenu(input);
         }
         else if (currentScreen == Screen.Password)
         {
+            Terminal.WriteLine(menuHint);
             RunPasswordMenu(input);
-        }
-        else if (currentScreen == Screen.Win)
-        {
-
         }
     }
 
@@ -75,8 +79,7 @@ public class Hacker : MonoBehaviour
         bool isValidPassowrd = ValidatePassword(input);
         if (isValidPassowrd)
         {
-            Terminal.ClearScreen();
-            Terminal.WriteLine($"Welcome to {levelOptions[level.ToString()]}");
+            DisplayWinScreen();
         }
         else
         {
@@ -84,9 +87,63 @@ public class Hacker : MonoBehaviour
         }
     }
 
+    private void DisplayWinScreen()
+    {
+        Terminal.ClearScreen();
+        StringBuilder message = new StringBuilder();
+
+        if (level == 1)
+        {
+            message.AppendLine(@"Have a book...");
+            message.Append(@" 
+    _______
+   /      /,
+  /      //
+ /______//
+(______(/"
+                               
+            );
+        }
+        else if (level == 2)
+        {
+            message.AppendLine(@"You got the prison key!");
+            message.Append(@" 
+ __
+/ o\
+\_ /
+ <|
+ <|
+ <|
+ `                     
+            ");
+        }
+        else if (level == 3)
+        {
+            message.Append(@"      
+        _..._
+      .'     '.      _
+     /    .-""-\   _/ \
+   .-|   /:.   |  |   |
+   |  \  |:.   /.-'-./
+   | .-'-;:__.'    =/
+   .'=  *=|NASA _.='
+  /   _.  |    ;
+ ;-.-'|    \   |
+/   | \    _\  _\
+\__/'._;.  ==' ==\
+         \    \   |
+         /    /   /
+         /-._/-._/
+         \   `\  \
+          `-._/._/");
+        }
+
+        Terminal.WriteLine(message.ToString());
+    }
+
     private bool ValidatePassword(string input)
     {
-        if (levelPasswords[level].Any(pass => pass == input))
+        if (input == password)
         {
             return true;
         }
@@ -119,8 +176,14 @@ public class Hacker : MonoBehaviour
     private void StartLevel(int level)
     {
         currentScreen = Screen.Password;
+
+        string[] availablePasswordsForLevel = levelPasswords[level];
+        int index = Random.Range(0, availablePasswordsForLevel.Length);
+        password = availablePasswordsForLevel[index];
+
         Terminal.ClearScreen();
         Terminal.WriteLine($"You have selected level {level} - {levelOptions[level.ToString()]}");
         Terminal.WriteLine("Please enter password:");
+        Terminal.WriteLine($"Hint: {password.Anagram()}");
     }
 }
