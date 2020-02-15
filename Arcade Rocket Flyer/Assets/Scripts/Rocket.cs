@@ -1,48 +1,83 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    private Rigidbody rigidbody;
-    // Start is called before the first frame update
+    private Rigidbody _rigidBody;
+    private AudioSource _audioSoruce;
+
+    [SerializeField]
+    private float _rotationPower = 100f;
+
+    [SerializeField]
+    private float _thrustPower = 20f;
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
 
-        if (rigidbody == null)
+        if (_rigidBody == null)
         {
             Debug.LogError("RigidBody is NULL!");
         }
+
+        _audioSoruce = GetComponent<AudioSource>();
+
+        if (_audioSoruce == null)
+        {
+            Debug.LogError("AudioSource is NULL!");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        ProcessInput();
+        Thrust();
+        Rotate();
     }
-
-    private void ProcessInput()
+    private void Thrust()
     {
         if (Input.GetKey(KeyCode.Space)) // can thrust while rotating
         {
-            Vector3 force = Vector3.up;
-            rigidbody.AddRelativeForce(force * Time.deltaTime);
-            Debug.Log("thrusting");
+            Vector3 force = Vector3.up * _thrustPower;
+            _rigidBody.AddRelativeForce(force);
+            if (!_audioSoruce.isPlaying) // so it does not layer
+            {
+                _audioSoruce.Play();
+            }
         }
+        else
+        {
+            _audioSoruce.Stop();
+        }
+    }
+    private void Rotate()
+    {
+        float rotationForFrame = _rotationPower * Time.deltaTime;
+     
 
+        _rigidBody.freezeRotation = true; // take manual control of the rotation
         if (Input.GetKey(KeyCode.A)) // cant rotate in both directions
         {
             // rotate left
-            transform.Rotate(Vector3.forward); // Z axis
-            Debug.Log("rotating left");
+            transform.Rotate(Vector3.forward * rotationForFrame); // Z axis
         }
         else if (Input.GetKey(KeyCode.D))
         {
             //rotate right
-            transform.Rotate(-Vector3.forward);
-            Debug.Log("rotating right");
+            transform.Rotate(Vector3.back * rotationForFrame); // Z axis
+        }
+
+        _rigidBody.freezeRotation = false; // resume physics control over rotation
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Friendly":
+                // do nothing
+                break;
+            default:
+                Destroy(this.gameObject);
+                break;
         }
     }
 }
