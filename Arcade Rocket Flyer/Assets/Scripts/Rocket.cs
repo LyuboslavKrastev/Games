@@ -1,15 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
     private Rigidbody _rigidBody;
     private AudioSource _audioSoruce;
 
-    [SerializeField]
-    private float _rotationPower = 100f;
+    [SerializeField] private float _levelLoadDelay = 2f;
+
+    [SerializeField] private float _rotationPower = 1000f;
+
+    [SerializeField] private AudioClip _mainEngine;
+    [SerializeField] private AudioClip _explosion;
+    [SerializeField] private AudioClip _success;
+
+    [SerializeField] private ParticleSystem _mainEngineParticles;
+    [SerializeField] private ParticleSystem _explosionParticles;
+    [SerializeField] private ParticleSystem _successParticles;
+
+    private enum State { Alive, Dying, Transcending }
+    private State _state = State.Alive;
 
     [SerializeField]
-    private float _thrustPower = 20f;
+    private float _thrustPower = 1700f;
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
@@ -29,26 +43,38 @@ public class Rocket : MonoBehaviour
 
     void Update()
     {
-        Thrust();
-        Rotate();
+        if (_state == State.Alive)
+        {
+            RespondToThrustInput();
+            RespondToRotateInput();
+        }  
     }
-    private void Thrust()
+    private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space)) // can thrust while rotating
         {
-            Vector3 force = Vector3.up * _thrustPower;
-            _rigidBody.AddRelativeForce(force);
+            ApplyThrust();
+            _mainEngineParticles.Play();
             if (!_audioSoruce.isPlaying) // so it does not layer
             {
-                _audioSoruce.Play();
+                _audioSoruce.PlayOneShot(_mainEngine);
             }
         }
         else
         {
             _audioSoruce.Stop();
+            _mainEngineParticles.Stop();
         }
     }
-    private void Rotate()
+
+    private void ApplyThrust()
+    {
+        Vector3 force = Vector3.up * _thrustPower;
+        _rigidBody.AddRelativeForce(force * Time.deltaTime);
+       
+    }
+
+    private void RespondToRotateInput()
     {
         float rotationForFrame = _rotationPower * Time.deltaTime;
      
@@ -70,14 +96,52 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (_state != State.Alive) { return; }
+
         switch (collision.gameObject.tag)
         {
-            case "Friendly":
-                // do nothing
+            case "Friendly":              
+                break;
+            case "Finish":
+                OnLevelFinished();
                 break;
             default:
-                Destroy(this.gameObject);
+                OnPlayerDeath();
                 break;
         }
+    }
+
+    private void OnLevelFinished()
+    {
+        _state = State.Transcending;
+        _successParticles.Play();
+        _audioSoruce.PlayOneShot(_success);
+            
+        Invoke(nameof(LoadNextLevel), _levelLoadDelay);
+    }
+
+    private void OnPlayerDeath()
+    {
+        _state = State.Dying;
+        _explosionParticles.Play();
+        _audioSoruce.Stop();
+        _audioSoruce.PlayOneShot(_explosion);
+        Invoke(nameof(LoadFirstLevel), _levelLoadDelay);
+    }
+
+    private void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+        if (nextSceneIndex >= sceneCount)
+        {
+            nextSceneIndex = 0;
+        }
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+    private void LoadFirstLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 }

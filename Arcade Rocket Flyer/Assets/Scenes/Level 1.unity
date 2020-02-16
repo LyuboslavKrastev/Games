@@ -355,6 +355,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1522943358}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &603466674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6979044511210477346, guid: 2812bbdd31b0a424499a184e1b984fc7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1522943358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &603466678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603466674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 302acd877a6189e429d87bffcf9dc99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementVector: {x: 20, y: 0, z: 0}
+  _movementFactor: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,10 +1831,30 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b941e30906522b3419c6ffaf35795f92, type: 2}
+    - target: {fileID: 3797994331357854292, guid: 585278d8aaf1d9342a42f1263bdecc08,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797994331357854292, guid: 585278d8aaf1d9342a42f1263bdecc08,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797994331357854292, guid: 585278d8aaf1d9342a42f1263bdecc08,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9147480889839365290, guid: 585278d8aaf1d9342a42f1263bdecc08,
         type: 3}
       propertyPath: m_Name
       value: Terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147480889839365290, guid: 585278d8aaf1d9342a42f1263bdecc08,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 585278d8aaf1d9342a42f1263bdecc08, type: 3}
@@ -1879,11 +1919,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.39100003
-      objectReference: {fileID: 0}
-    - target: {fileID: 5175205912061764256, guid: 1d7111e43df4359468006218a786a3f7,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6598629447337094045, guid: 1d7111e43df4359468006218a786a3f7,
         type: 3}
@@ -1954,26 +1989,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 847410537149043208, guid: b4cecdf157fc20541a6f264430fcaaba,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9502386
-      objectReference: {fileID: 0}
-    - target: {fileID: 847410537149043208, guid: b4cecdf157fc20541a6f264430fcaaba,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 9.699873
-      objectReference: {fileID: 0}
-    - target: {fileID: 847410537149043208, guid: b4cecdf157fc20541a6f264430fcaaba,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9.022133
-      objectReference: {fileID: 0}
-    - target: {fileID: 945620607871739415, guid: b4cecdf157fc20541a6f264430fcaaba,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: f3c36c9728e2f394d923a483ba5d8ba9, type: 2}
     - target: {fileID: 6174911060082098761, guid: b4cecdf157fc20541a6f264430fcaaba,
         type: 3}
       propertyPath: m_Name
@@ -2051,17 +2066,17 @@ PrefabInstance:
     - target: {fileID: 9153989563989333989, guid: e0eb8097f69bf04428d23aaea728f47a,
         type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0
+      value: 0.17097643
       objectReference: {fileID: 0}
     - target: {fileID: 9153989563989333989, guid: e0eb8097f69bf04428d23aaea728f47a,
         type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0
+      value: 0.116545044
       objectReference: {fileID: 0}
     - target: {fileID: 9153989563989333989, guid: e0eb8097f69bf04428d23aaea728f47a,
         type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0
+      value: 0.254717
       objectReference: {fileID: 0}
     - target: {fileID: 9153989563989333991, guid: e0eb8097f69bf04428d23aaea728f47a,
         type: 3}
