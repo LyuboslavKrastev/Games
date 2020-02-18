@@ -24,9 +24,9 @@ public class CubeEditor : MonoBehaviour
         // constrain the position of the block whenever we try to move something in the scene so we can more precisely build a path of cubes
         float xPosition = Mathf.RoundToInt(transform.position.x / _gridSize) * _gridSize;
         float zPosition = Mathf.RoundToInt(transform.position.z / _gridSize) * _gridSize;
-
-        _textMesh.text = $"{xPosition / _gridSize}, {zPosition / _gridSize}";
-
+        string labelText = $"{xPosition / _gridSize}, {zPosition / _gridSize}";
+        _textMesh.text = labelText;
+        gameObject.name = "Custom Cube: " + labelText;
         transform.position = new Vector3(xPosition, 0f, zPosition);
     }
 }
