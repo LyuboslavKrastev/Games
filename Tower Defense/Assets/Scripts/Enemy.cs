@@ -7,20 +7,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] List<Waypoint> path;
     void Start()
     {
-        PrintWayPoints();
+        StartCoroutine(MoveThroughWaypoints());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void PrintWayPoints()
+    private IEnumerator MoveThroughWaypoints()
     {
         foreach (var waypoint in path)
         {
-            Debug.Log(waypoint.name);
+            transform.position = waypoint.transform.position;
+            yield return new WaitForSeconds(1f);
         }
     }
 }
