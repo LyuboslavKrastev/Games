@@ -2,28 +2,33 @@
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class Player : MonoBehaviour
+public class Player_MovementHandler : MonoBehaviour
 {
-    [Tooltip("in m/s")][SerializeField] float _speed = 10f;
 
+    [Header("General")]
+    [Tooltip("in m/s")][SerializeField] float _speed = 10f;
     [SerializeField] private float _xPositionBoundary = 8f;
     [SerializeField] private float _yPositionBoundary = 5f;
 
-    float _horizontalInput = 0f;
-    float _verticalInput = 0f;
-
+    [Header("Screen-position based")]
     private float _positionPitchFactor = -5f;
-    private float _controlPitchFactor = -20f;
-
     private float _positionYawFactor = 5f;
 
+    [Header("Control-throw based")]
+    private float _controlPitchFactor = -20f;
     private float _controllRollFactor = -20f;
 
+    private float _horizontalInput;
+    private float _verticalInput;
 
+    private bool _controllsEnabled = true;
     void Update()
     {
-        ProcessTranslation();
-        ProcessRotation();
+        if (_controllsEnabled)
+        {
+            ProcessTranslation();
+            ProcessRotation();
+        }     
     }
 
     private void ProcessRotation()
@@ -67,5 +72,10 @@ public class Player : MonoBehaviour
         float rawYPosition = transform.localPosition.y + verticalOffsetForFrame;
         float constrainedYPosition = Mathf.Clamp(rawYPosition, -_yPositionBoundary, _yPositionBoundary); // restricting the position so that the player cannot fly off the screen
         return constrainedYPosition;
+    }
+
+    void OnPlayerDeath() // called by string reference
+    {
+        _controllsEnabled = false;
     }
 }
