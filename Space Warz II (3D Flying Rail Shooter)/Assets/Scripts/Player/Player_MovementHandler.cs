@@ -74,7 +74,7 @@ public class Player_MovementHandler : MonoBehaviour
         return constrainedYPosition;
     }
 
-    void OnPlayerDeath() // called by string reference
+    void OnDeath() // called by string reference
     {
         _controllsEnabled = false;
     }

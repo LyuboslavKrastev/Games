@@ -4,15 +4,14 @@ public class ScoreBoard : MonoBehaviour
 {
     private int _score;
     private Text _scoreText;
-    private int pointsPerHit = 10;
     void Start()
     {
         _scoreText = GetComponent<Text>();
         _scoreText.text = $"Score: {_score}";
     }
-    public void UpdateScore()
+    public void UpdateScore(int points)
     {
-        _score += pointsPerHit;
+        _score += points;
         _scoreText.text = $"Score: {_score}";
     }
 }

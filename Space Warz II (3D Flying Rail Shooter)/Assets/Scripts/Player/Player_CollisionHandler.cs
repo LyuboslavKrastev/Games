@@ -16,7 +16,7 @@ public class Player_CollisionHandler : MonoBehaviour
     private void StartDeathSequence()
     {
         // Actor model
-        SendMessage("OnPlayerDeath"); // calling the method within the movement handler
+        SendMessage("OnDeath"); // calling the method within the movement handler
     }
 
     private void ReloadLevel()

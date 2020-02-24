@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1471299798
 Transform:
   m_ObjectHideFlags: 0
@@ -4865,6 +4865,7 @@ GameObject:
   - component: {fileID: 1463579282}
   - component: {fileID: 5629351960810388188}
   - component: {fileID: 1463579287}
+  - component: {fileID: -532942106792621206}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -4992,7 +4993,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelLoadDelay: 2
-  _explosion: {fileID: 0}
+  _explosion: {fileID: 1471299794}
+--- !u!114 &-532942106792621206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125961071900612375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87272ba0a746a2a4d9ea9621c2c27f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guns: []
 --- !u!1001 &9063669380803093275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5000,6 +5014,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2129452929418597985}
     m_Modifications:
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.collisionMessages
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3591687298895588573, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5058,7 +5087,7 @@ PrefabInstance:
     - target: {fileID: 3591687298895588574, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
         type: 3}
       propertyPath: m_Name
-      value: Lasers_Left
+      value: Gun_Left
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26037e939bd1bcf42ae1c2490a46f5c8, type: 3}
@@ -5075,6 +5104,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2129452929418597985}
     m_Modifications:
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591687298895588571, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
+        type: 3}
+      propertyPath: CollisionModule.collisionMessages
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3591687298895588573, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5133,7 +5177,7 @@ PrefabInstance:
     - target: {fileID: 3591687298895588574, guid: 26037e939bd1bcf42ae1c2490a46f5c8,
         type: 3}
       propertyPath: m_Name
-      value: Lasers_Right
+      value: Gun_Right
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26037e939bd1bcf42ae1c2490a46f5c8, type: 3}
