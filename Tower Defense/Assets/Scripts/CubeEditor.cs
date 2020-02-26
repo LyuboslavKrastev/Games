@@ -3,30 +3,48 @@
 [ExecuteInEditMode]
 [SelectionBase]
 public class CubeEditor : MonoBehaviour
-{
-    // our current cube dimensions are 10, 10, 10, but we may decide to change them in the future
-    [Range(1f, 20f)] [SerializeField] private float _gridSize = 10f;
-
-    private TextMesh _textMesh;
+{   
+    private Waypoint _waypoint;
 
     void Awake()
     {
-        _textMesh = GetComponentInChildren<TextMesh>();
+        _waypoint = GetComponent<Waypoint>();
 
-        if (_textMesh == null)
+        if (_waypoint == null)
         {
-            Debug.LogError("TextMesh is NULL!");
+            Debug.LogError("Waypoint is NULL!");
         }
     }
 
     void Update()
     {
-        // constrain the position of the block whenever we try to move something in the scene so we can more precisely build a path of cubes
-        float xPosition = Mathf.RoundToInt(transform.position.x / _gridSize) * _gridSize;
-        float zPosition = Mathf.RoundToInt(transform.position.z / _gridSize) * _gridSize;
-        string labelText = $"{xPosition / _gridSize}, {zPosition / _gridSize}";
-        _textMesh.text = labelText;
+        int gridSize = _waypoint.GridSize;
+        Vector2Int gridPosition = _waypoint.GridPosition;
+
+        SnapToGrid(gridSize, gridPosition);
+        UpdateLabel(gridPosition);
+    }
+
+    private void SnapToGrid(int gridSize, Vector2Int gridPosition)
+    {
+        transform.position = new Vector3 (
+                gridPosition.x * gridSize,
+                0f,
+                gridPosition.y * gridSize
+            );
+    }
+
+    private void UpdateLabel(Vector2Int gridPosition)
+    {
+        TextMesh textMesh = GetComponentInChildren<TextMesh>();
+
+        if (textMesh == null)
+        {
+            Debug.LogError("TextMesh is NULL!");
+        }
+
+        string labelText = $"{gridPosition.x}, {gridPosition.y}";
+        textMesh.text = labelText;
         gameObject.name = "Custom Cube: " + labelText;
-        transform.position = new Vector3(xPosition, 0f, zPosition);
     }
 }

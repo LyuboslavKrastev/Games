@@ -1,18 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private const int _gridSize = 10;
+
+    public Vector2Int GridPosition
     {
-        
+        get
+        {
+            return new Vector2Int(
+                Mathf.RoundToInt(transform.position.x / _gridSize),
+                Mathf.RoundToInt(transform.position.z / _gridSize)
+            );
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GridSize 
     {
-        
+        get
+        {
+            return _gridSize;
+        }  
+    }
+
+    public void SetTopColor(Color color)
+    {
+        MeshRenderer topMeshRenderer = transform.Find("Top").GetComponent<MeshRenderer>();
+
+        topMeshRenderer.material.color = color;
     }
 }
