@@ -6,8 +6,7 @@ public class Enemy : MonoBehaviour
 
     private int pointsPerHit = 10;
 
-    private int _hitsBeforeExploding = 3;
-
+    private int _hitsBeforeExploding = 1;
 
     private ScoreBoard _scoreBoard;
     void Start()

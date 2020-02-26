@@ -19,33 +19,24 @@ public class Player_FiringHandler : MonoBehaviour
     {
         if (CrossPlatformInputManager.GetButton("Fire"))
         {
-            Shoot();
+            IsShooting(true);
         }
         else
         {
-            StopShooting();
+            IsShooting(false);
         }
     }
 
     void OnDeath() // called by string reference
     {
         _firingEnabled = false;
-
-        StopShooting();
     }
-    private void Shoot()
+    private void IsShooting(bool isShooting)
     {
         foreach (var gun in _guns)
         {
-            gun.SetActive(true);
-        }
-    }
-
-    private void StopShooting()
-    {
-        foreach (var gun in _guns)
-        {
-            gun.SetActive(false);
+            var emission = gun.GetComponent<ParticleSystem>().emission;
+            emission.enabled = isShooting;
         }
     }
 }
