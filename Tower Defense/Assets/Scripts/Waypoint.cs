@@ -4,6 +4,10 @@ public class Waypoint : MonoBehaviour
 {
     private const int _gridSize = 10;
 
+    public bool IsExplored { get; set; } = false;
+
+    public Waypoint exploredFrom; 
+
     public Vector2Int GridPosition
     {
         get
