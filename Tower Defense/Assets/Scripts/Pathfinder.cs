@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Pathfinder : MonoBehaviour
@@ -16,6 +14,8 @@ public class Pathfinder : MonoBehaviour
     [SerializeField] private Waypoint _startWaypoint;
     [SerializeField] private Waypoint _finishWaypoint;
 
+    private Stack<Waypoint> _path = new Stack<Waypoint>();
+
     private Vector2Int[] _directions =
     {
         // y is mapping to our z
@@ -25,16 +25,35 @@ public class Pathfinder : MonoBehaviour
         Vector2Int.left
     };
 
-    void Start()
+
+    public Stack<Waypoint> GetPath()
     {
         LoadBlocks();
-
         ColorStartAndFinish();
+        BreadthFirstSearch();
+        CreatePath();
 
-        FindPath();
+        return _path;
     }
 
-    private void FindPath()
+    private void CreatePath()
+    {
+        _path.Push(_finishWaypoint);
+
+        Waypoint previous = _finishWaypoint.exploredFrom;
+
+        while (previous != _startWaypoint)
+        {
+            // add intermidiate waypoints
+            _path.Push(previous);
+            previous = previous.exploredFrom;
+        }
+
+        // add start waypoint
+        _path.Push(_startWaypoint);
+    }
+
+    private void BreadthFirstSearch()
     {
         _waypointQueue.Enqueue(_startWaypoint);
 
