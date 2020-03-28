@@ -28,12 +28,20 @@ public class Pathfinder : MonoBehaviour
 
     public Stack<Waypoint> GetPath()
     {
+        if (_path.Count == 0)
+        {
+            CalculatePath();
+        }
+
+        return _path;
+    }
+
+    private void CalculatePath()
+    {
         LoadBlocks();
         ColorStartAndFinish();
         BreadthFirstSearch();
         CreatePath();
-
-        return _path;
     }
 
     private void CreatePath()
