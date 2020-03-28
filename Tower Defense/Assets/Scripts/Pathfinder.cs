@@ -67,8 +67,6 @@ public class Pathfinder : MonoBehaviour
 
             ExploreNeighbours();           
         }
-
-        Debug.Log("Finished pathfinding.");
     }
 
     private void StopIfAtFinish()
@@ -104,7 +102,6 @@ public class Pathfinder : MonoBehaviour
         }
         neighbour.exploredFrom = currentSearchCenter;
         _waypointQueue.Enqueue(neighbour);
-        Debug.Log($"Queueing {neighbour}");
     }
 
     private void ColorStartAndFinish()
