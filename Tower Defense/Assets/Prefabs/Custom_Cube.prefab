@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 3890161276222112013}
   - component: {fileID: 3890161276222112012}
   - component: {fileID: 3239938389164056456}
+  - component: {fileID: 5016316872514406116}
   m_Layer: 0
   m_Name: Custom_Cube
   m_TagString: Untagged
@@ -246,7 +247,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907314778e72209439fe5558cc74c3b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canBuildOn: 1
+  _towerPrefab: {fileID: 8402856454305894760, guid: c47dc43e4facd424a9743428dc280f33,
+    type: 3}
   exploredFrom: {fileID: 0}
+--- !u!65 &5016316872514406116
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3890161276222112014}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: -5, z: 0}
 --- !u!1001 &1018151554015401119
 PrefabInstance:
   m_ObjectHideFlags: 0

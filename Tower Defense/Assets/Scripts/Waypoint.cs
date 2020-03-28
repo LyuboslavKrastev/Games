@@ -4,7 +4,11 @@ public class Waypoint : MonoBehaviour
 {
     private const int _gridSize = 10;
 
+    public bool canBuildOn = true;
+
     public bool IsExplored { get; set; } = false;
+
+    [SerializeField] private Tower _towerPrefab;
 
     public Waypoint exploredFrom; 
 
@@ -27,10 +31,18 @@ public class Waypoint : MonoBehaviour
         }  
     }
 
-    public void SetTopColor(Color color)
+    void OnMouseOver()
     {
-        MeshRenderer topMeshRenderer = transform.Find("Top").GetComponent<MeshRenderer>();
-
-        topMeshRenderer.material.color = color;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (canBuildOn)
+            {
+                GameObject.Instantiate(_towerPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                print("can not build here");
+            }         
+        }
     }
 }
