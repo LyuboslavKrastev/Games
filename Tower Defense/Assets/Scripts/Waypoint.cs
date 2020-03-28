@@ -37,11 +37,12 @@ public class Waypoint : MonoBehaviour
         {
             if (canBuildOn)
             {
+                canBuildOn = false;
                 GameObject.Instantiate(_towerPrefab, transform.position, Quaternion.identity);
             }
             else
             {
-                print("can not build here");
+                print("cannot build here");
             }         
         }
     }

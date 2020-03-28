@@ -3727,7 +3727,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    minKillSpeed: 0
+    minKillSpeed: 1000
     maxKillSpeed: 10000
     radiusScale: 1
     collidesWith:
@@ -4709,7 +4709,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 391a141b1d70af1428c7eb8e29d31eaa, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4800,8 +4800,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectToRotate: {fileID: 8399885303180542617}
-  _targetEnemy: {fileID: 0}
   _projectileParticle: {fileID: 6588928841004765632}
+  _attackRange: 50
 --- !u!1001 &8402856453197127001
 PrefabInstance:
   m_ObjectHideFlags: 0
