@@ -22,10 +22,12 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
-        var deathFX = GameObject.Instantiate(_deathParticlePrefab, transform.position, Quaternion.identity);
+        ParticleSystem deathFX = GameObject.Instantiate(_deathParticlePrefab, transform.position, Quaternion.identity);
         deathFX.Play();
+        float destroyDelay = deathFX.main.duration;
+        Destroy(deathFX.gameObject, destroyDelay);
         Destroy(this.gameObject);
     }
 }

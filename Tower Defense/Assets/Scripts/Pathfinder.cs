@@ -62,7 +62,7 @@ public class Pathfinder : MonoBehaviour
 
     private void AddToPath(Waypoint waypoint)
     {
-        waypoint.canBuildOn = false;
+        waypoint.CanBuildOn = false;
         _path.Push(waypoint);
     }
 

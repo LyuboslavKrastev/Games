@@ -4,11 +4,16 @@ public class Waypoint : MonoBehaviour
 {
     private const int _gridSize = 10;
 
-    public bool canBuildOn = true;
+    public bool CanBuildOn { get; set; } = true;
 
     public bool IsExplored { get; set; } = false;
 
-    [SerializeField] private Tower _towerPrefab;
+    private TowerFactory _towerFactory;
+
+    void Start()
+    {
+        _towerFactory = FindObjectOfType<TowerFactory>();
+    }
 
     public Waypoint exploredFrom; 
 
@@ -35,10 +40,9 @@ public class Waypoint : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (canBuildOn)
+            if (CanBuildOn)
             {
-                canBuildOn = false;
-                GameObject.Instantiate(_towerPrefab, transform.position, Quaternion.identity);
+                _towerFactory.AddTower(this);
             }
             else
             {

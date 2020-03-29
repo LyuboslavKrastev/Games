@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private float _cooldown = 6f;
-    [SerializeField] private EnemyMovement _enemyPrefab; 
+    private float _spawnCooldown = 1f;
+    [SerializeField] private EnemyMovement _enemyPrefab;
+    [SerializeField] private Transform enemyParentTransform;
     void Start()
     {
         StartCoroutine(SpawnEnemies());
@@ -15,11 +16,13 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            GameObject
+            GameObject enemy = GameObject
                 .Instantiate(
                 _enemyPrefab.gameObject, transform.position, Quaternion.identity);
 
-            yield return new WaitForSeconds(_cooldown);
+            enemy.transform.parent = enemyParentTransform;
+
+            yield return new WaitForSeconds(_spawnCooldown);
         }    
     }
 }
