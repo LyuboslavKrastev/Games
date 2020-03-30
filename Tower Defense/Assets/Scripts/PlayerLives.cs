@@ -1,32 +1,37 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class Health : MonoBehaviour
+public class PlayerLives : MonoBehaviour
 {
-    [SerializeField] private int _health = 10;
-    [SerializeField] private ParticleSystem _hitParticlePrefab;
+    [SerializeField] private int _lives = 10;
     [SerializeField] private ParticleSystem _deathParticlePrefab;
+    [SerializeField] private Text _livesText;
 
-    private void OnParticleCollision(GameObject other)
+    void Start()
     {
-        TakeDamage();
+        UpdateLivesText();
     }
-
     private void OnTriggerEnter(Collider other)
     {
         TakeDamage();
     }
+    private void UpdateLivesText()
+    {
+        _livesText.text = $"Lives: {_lives}";
+    }
 
     void TakeDamage()
     {
-        _health = Mathf.Max(_health - 1, 0);
-        _hitParticlePrefab.Play();
+        _lives = Mathf.Max(_lives - 1, 0);
+        UpdateLivesText();
 
-        if (_health == 0)
+        if (_lives == 0)
         {
             Die();
         }
     }
-
     private void Die()
     {
         ParticleSystem deathFX = GameObject.Instantiate(_deathParticlePrefab, transform.position, Quaternion.identity);

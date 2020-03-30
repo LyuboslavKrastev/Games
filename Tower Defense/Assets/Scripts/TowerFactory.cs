@@ -5,9 +5,9 @@ using UnityEngine;
 public class TowerFactory : MonoBehaviour
 {
     [SerializeField] private Tower _towerPrefab;
-    [SerializeField] private int _towerLimit = 5;
     [SerializeField] private Transform _towerParentTransform;
 
+    private int _towerLimit = 5;
     private Queue<Tower> _towerQueue = new Queue<Tower>();
     public void AddTower(Waypoint waypoint)
     {
