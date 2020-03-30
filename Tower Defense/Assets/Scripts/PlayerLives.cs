@@ -8,13 +8,14 @@ public class PlayerLives : MonoBehaviour
     [SerializeField] private int _lives = 10;
     [SerializeField] private ParticleSystem _deathParticlePrefab;
     [SerializeField] private Text _livesText;
-
+    [SerializeField] private AudioClip _baseDamageSFX;
     void Start()
     {
         UpdateLivesText();
     }
     private void OnTriggerEnter(Collider other)
     {
+        GetComponent<AudioSource>().PlayOneShot(_baseDamageSFX);
         TakeDamage();
     }
     private void UpdateLivesText()

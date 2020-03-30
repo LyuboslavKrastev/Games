@@ -5,13 +5,17 @@ public class Health : MonoBehaviour
     [SerializeField] private int _health = 10;
     [SerializeField] private ParticleSystem _hitParticlePrefab;
     [SerializeField] private ParticleSystem _deathParticlePrefab;
+    [SerializeField] private AudioClip _hitSFX;
+    [SerializeField] private AudioClip _deathSFX;
 
-    private void OnParticleCollision(GameObject other)
+    private AudioSource _audioSource;
+
+    void Start()
     {
-        TakeDamage();
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnParticleCollision(GameObject other)
     {
         TakeDamage();
     }
@@ -20,9 +24,12 @@ public class Health : MonoBehaviour
     {
         _health = Mathf.Max(_health - 1, 0);
         _hitParticlePrefab.Play();
+        _audioSource.PlayOneShot(_hitSFX);
 
         if (_health == 0)
         {
+            _audioSource.Stop();
+            AudioSource.PlayClipAtPoint(_deathSFX, Camera.main.transform.position);
             Die();
         }
     }

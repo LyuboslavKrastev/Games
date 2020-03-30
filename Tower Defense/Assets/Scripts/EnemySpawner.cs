@@ -9,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private EnemyMovement _enemyPrefab;
     [SerializeField] private Transform enemyParentTransform;
     [SerializeField] private Text _spawnedEnemies;
+    [SerializeField] AudioClip _enemySpawnSFX;
+
     private int _score;
     void Start()
     {
@@ -26,6 +28,7 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             _score++;
+            GetComponent<AudioSource>().PlayOneShot(_enemySpawnSFX);
             UpdateSpawnedEnemiesText();
 
             GameObject enemy = GameObject.Instantiate(
